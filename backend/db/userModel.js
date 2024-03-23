@@ -18,9 +18,13 @@ const UserSchema = new mongoose.Schema({
     type:{
         type:String,
         required:true,
+    },
+    reminders:{
+        type:mongoose.Schema.Types.Mixed,
+        
     }
 
 
 })
 
-module.exports = mongoose.model.Users || mongoose.model("Industry", UserSchema);
+module.exports = mongoose.model.Users || mongoose.model("Final_users", UserSchema);

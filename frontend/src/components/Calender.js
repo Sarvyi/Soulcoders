@@ -15,6 +15,27 @@ const days = Array.from({ length: daysInMonth(year, month + 1) }, (_, i) => i + 
 
 const Calendar = () => {
     const navigate = useNavigate();
+    const updateUserReminders = async (email, updatedReminders) => {
+        try {
+          // Make a POST request to your API endpoint
+          const response = await axios.post('http://localhost:8000/updateUserReminders', {
+            email,
+            reminders: reminders
+          });
+      
+          // Check if the update was successful
+          if (response.status === 200) {
+            // Update the local storage item named 'rem' with the new reminders data
+            localStorage.setItem('rem', JSON.stringify(reminders));
+            console.log('Reminders updated successfully.');
+          } else {
+            console.error('Failed to update reminders.');
+          }
+        } catch (error) {
+          console.error('Error updating reminders:', error);
+        }
+      };
+      const type=localStorage.getItem("type")
     const [expanded, setExpanded] = useState(true)
     const logout = () => {
 
@@ -34,6 +55,8 @@ const Calendar = () => {
     };
     useEffect(() => {
         // Update localStorage whenever reminders change
+        const email=localStorage.getItem('email');
+        updateUserReminders(email, JSON.stringify(reminders));
         localStorage.setItem('reminders', JSON.stringify(reminders));
     }, [reminders]);
 
@@ -44,7 +67,7 @@ const Calendar = () => {
                     <div className="text-2xl font-bold">Kavach</div>
                     <ul className="flex space-x-4">
                         <li><Link to="/dashboard" className="hover:text-gray-300 text-lg">Home</Link></li>
-                        <li><Link to="/calender" className='hover:text-gray-300 text-lg'>Calender</Link></li>
+                        {type=="Manager" && (<li><Link to="/calender" className='hover:text-gray-300 text-lg'>Calender</Link></li>)}
                         <li><Link to="/reports" className='hover:text-gray-300 text-lg'>Reports</Link></li>
                         <li><Link to="/profile" className="hover:text-gray-300 text-lg">Profile</Link></li>
                         {}

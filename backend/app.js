@@ -17,14 +17,39 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/", (request, response, next) => {
     response.json({ message: "Hey! This is your server response!" });
     next();
-});
+}); 
 
 // creating user login and register end points
 
 const User = require("./db/userModel");
 
 // register endpoint
-
+// API endpoint to update user reminders
+app.post('/updateUserReminders', async (req, res) => {
+    const { email, reminders } = req.body;
+  
+    try {
+      // Connect to MongoDB
+      const client = await MongoClient.connect(mongoUrl);
+      const db = client.db(dbName);
+  
+      // Update the user object in MongoDB based on the email
+      const result = await db.collection('users').updateOne(
+        { email },
+        { $set: { reminders:reminders } }
+      );
+  
+      // Close the MongoDB connection
+      client.close();
+  
+      // Send a success response
+      res.sendStatus(200);
+    } catch (error) {
+      console.error('Error updating user reminders:', error);
+      // Send an error response
+      res.status(500).send('Error updating user reminders.');
+    }
+  });
 
 app.post("/register", (request, response) => {
     // hash the password

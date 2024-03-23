@@ -56,7 +56,7 @@ const ProfilePage = () => {
                     <div className="text-2xl font-bold">Kavach</div>
                     <ul className="flex space-x-4">
                         <li><Link to="/dashboard" className="hover:text-gray-300 text-lg">Home</Link></li>
-                        <li><Link to="/calender" className='hover:text-gray-300 text-lg'>Calender</Link></li>
+                        {type=="Manager" && (<li><Link to="/calender" className='hover:text-gray-300 text-lg'>Calender</Link></li>)}
                         <li><Link to="/reports" className='hover:text-gray-300 text-lg'>Reports</Link></li>
                         <li><Link to="/profile" className="hover:text-gray-300 text-lg">Profile</Link></li>
                         {}

@@ -17,7 +17,7 @@ const LandingPage = () => {
       </nav>
 
      
-      <div className="bg-blue-600 text-white text-center p-6 ">
+      <div className="bg-blue-500 text-white text-center p-6 ">
   <h1 className="text-4xl font-bold mb-4">Predictive Machine Maintenance for Hydraulics</h1>
   <p className="text-xl mb-8">Utilize AI to prevent downtime and optimize maintenance schedules.</p>
   <button className="bg-blue-800 text-white font-bold py-2 px-4 rounded"><Link to="/register" className="hover:text-gray-300">Get Started</Link></button>
