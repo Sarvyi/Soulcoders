@@ -11,6 +11,7 @@ const Reports = () => {
     const navigate = useNavigate();
     const logout = () => {
         localStorage.removeItem("token");
+localStorage.removeItem("type");
         navigate("/");
     };
     const type=localStorage.getItem("type")

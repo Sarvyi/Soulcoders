@@ -4,13 +4,16 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import profile from '../images/profile.png'
 import LeaderBoard from './LeaderBoard';
+import Feedback from './Feedback';
 
 const ProfilePage = () => {
     const navigate = useNavigate();
     const email = localStorage.getItem("email")
     const type=localStorage.getItem("type")
+    console.log(email," type is: ",type)
     const logout = () => {
         localStorage.removeItem("token");
+localStorage.removeItem("type");
         navigate("/");
     };
 
@@ -82,6 +85,7 @@ const ProfilePage = () => {
                     
                 </div>
             </div>
+            <Feedback/>
 
 
             

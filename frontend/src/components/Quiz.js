@@ -9,6 +9,7 @@ const Quiz = () => {
 
   const logout = () => {
     localStorage.removeItem("token");
+localStorage.removeItem("type");
     navigate("/");
   };
 

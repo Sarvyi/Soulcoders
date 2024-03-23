@@ -11,6 +11,7 @@ const UserDashboard = () => {
   const [expanded, setExpanded] = useState(true)
   const logout = () => {
     localStorage.removeItem("token");
+localStorage.removeItem("type");
     navigate("/");
   };
 

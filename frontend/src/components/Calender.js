@@ -40,6 +40,7 @@ const Calendar = () => {
     const logout = () => {
 
         localStorage.removeItem("token");
+localStorage.removeItem("type");
         navigate("/");
     };
     const [reminders, setReminders] = useState(() => {

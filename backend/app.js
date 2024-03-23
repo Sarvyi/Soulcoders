@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const auth = require("./auth");
 const dbConnect = require("./db/dbConnect");
 const fs = require("fs");
+const mongoose = require("mongoose");
 dbConnect();
 var cors = require("cors");
 app.use(cors());
@@ -17,9 +18,36 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/", (request, response, next) => {
     response.json({ message: "Hey! This is your server response!" });
     next();
-}); 
+});
 
 // creating user login and register end points
+
+// Define a schema for the user feedback data
+const feedbackSchema = new mongoose.Schema({
+    message: String,
+    timestamp: { type: Date, default: Date.now }
+});
+
+const Feedback = mongoose.model('Feedback', feedbackSchema);
+
+// Middleware to parse JSON bodies
+app.use(bodyParser.json());
+
+// Route to handle saving user feedback
+app.post('/api/feedback', async (req, res) => {
+    const { message } = req.body;
+
+    try {
+        // Create a new feedback document and save it to the database
+        const feedback = new Feedback({ message });
+        await feedback.save();
+
+        res.status(201).json({ message: 'Feedback saved successfully' });
+    } catch (err) {
+        console.error('Error saving feedback:', err);
+        res.status(500).json({ message: 'Error saving feedback' });
+    }
+});
 
 const User = require("./db/userModel");
 
@@ -27,29 +55,29 @@ const User = require("./db/userModel");
 // API endpoint to update user reminders
 app.post('/updateUserReminders', async (req, res) => {
     const { email, reminders } = req.body;
-  
+
     try {
-      // Connect to MongoDB
-      const client = await MongoClient.connect(mongoUrl);
-      const db = client.db(dbName);
-  
-      // Update the user object in MongoDB based on the email
-      const result = await db.collection('users').updateOne(
-        { email },
-        { $set: { reminders:reminders } }
-      );
-  
-      // Close the MongoDB connection
-      client.close();
-  
-      // Send a success response
-      res.sendStatus(200);
+        // Connect to MongoDB
+        const client = await MongoClient.connect(mongoUrl);
+        const db = client.db(dbName);
+
+        // Update the user object in MongoDB based on the email
+        const result = await db.collection('users').updateOne(
+            { email },
+            { $set: { reminders: reminders } }
+        );
+
+        // Close the MongoDB connection
+        client.close();
+
+        // Send a success response
+        res.sendStatus(200);
     } catch (error) {
-      console.error('Error updating user reminders:', error);
-      // Send an error response
-      res.status(500).send('Error updating user reminders.');
+        console.error('Error updating user reminders:', error);
+        // Send an error response
+        res.status(500).send('Error updating user reminders.');
     }
-  });
+});
 
 app.post("/register", (request, response) => {
     // hash the password
@@ -60,7 +88,7 @@ app.post("/register", (request, response) => {
             const user = new User({
                 email: request.body.email,
                 password: hashedPassword,
-                type:request.body.type,
+                type: request.body.type,
             });
 
             // save the new user
@@ -245,7 +273,7 @@ app.get('/getAllUsers', async (req, res) => {
     try {
         const { selectedLanguage } = req.params;
         const users = await User.find(
-            { }
+            {}
         );
 
         res.status(200).send(users);
