@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import './landing.css'
+
 const LandingPage = () => {
   return (
     <div className="bg-gray-100 font-sans">
@@ -7,6 +9,9 @@ const LandingPage = () => {
       {/* Navigation */}
       <nav className="bg-blue-500 p-4 text-white w-full">
         <div className="container mx-auto flex justify-between items-center">
+          {/* <div className=''></div>
+           */}
+          <div className='imger'></div>
           <div className="text-2xl font-bold">AI Kavach</div>
           <ul className="flex space-x-4">
             <li><Link to="/" className="hover:text-gray-300">Home</Link></li>            
